@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 应用名称 -->
+    <string name="app_name">智能电销王</string>
+    
+    <!-- 登录页面 -->
+    <string name="login_title">登录</string>
+    <string name="server_url">服务器地址</string>
+    <string name="database_name">数据库名称</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="login">登录</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_failed">登录失败</string>
+    <string name="please_input_url">请输入服务器地址</string>
+    <string name="please_input_database">请输入数据库名称</string>
+    <string name="please_input_username">请输入用户名</string>
+    <string name="please_input_password">请输入密码</string>
+    
+    <!-- 主页 -->
+    <string name="home">首页</string>
+    <string name="customers">客户</string>
+    <string name="statistics">统计</string>
+    <string name="settings">设置</string>
+    <string name="search_hint">搜索客户姓名、手机号...</string>
+    <string name="pull_to_refresh">下拉刷新</string>
+    <string name="refreshing">刷新中...</string>
+    <string name="load_more">加载更多</string>
+    
+    <!-- 客户列表 -->
+    <string name="all_customers">全部客户</string>
+    <string name="private_customers">私客</string>
+    <string name="public_customers">公客</string>
+    <string name="no_customers">暂无客户</string>
+    <string name="sync_customers">同步客户</string>
+    <string name="syncing">同步中...</string>
+    <string name="sync_success">同步成功</string>
+    <string name="sync_failed">同步失败</string>
+    
+    <!-- 客户详情 -->
+    <string name="customer_detail">客户详情</string>
+    <string name="customer_name">客户姓名</string>
+    <string name="phone">手机号</string>
+    <string name="wechat">微信昵称</string>
+    <string name="customer_type">客户类型</string>
+    <string name="customer_level">客户等级</string>
+    <string name="customer_status">客户状态</string>
+    <string name="requirement">客户需求</string>
+    <string name="remark">备注</string>
+    <string name="intended_property">意向楼盘</string>
+    <string name="follow_count">跟进次数</string>
+    <string name="last_follow_time">最后跟进</string>
+    <string name="call">拨打</string>
+    <string name="add_follow">添加跟进</string>
+    <string name="view_follows">查看跟进</string>
+    
+    <!-- 拨号 -->
+    <string name="dial_now">立即拨打</string>
+    <string name="dialing">拨号中...</string>
+    <string name="call_ended">通话结束</string>
+    <string name="add_follow_after_call">是否添加跟进记录？</string>
+    <string name="permission_call_denied">拨打电话权限被拒绝</string>
+    <string name="invalid_phone">无效的手机号</string>
+    
+    <!-- 自动拨号 -->
+    <string name="auto_dialer">自动拨号</string>
+    <string name="start_auto_dial">开始自动拨号</string>
+    <string name="stop_auto_dial">停止拨号</string>
+    <string name="pause_dial">暂停</string>
+    <string name="resume_dial">继续</string>
+    <string name="skip_current">跳过</string>
+    <string name="dial_strategy">拨号策略</string>
+    <string name="dial_interval">拨号间隔</string>
+    <string name="customer_range">客户范围</string>
+    <string name="strategy_priority">优先级优先</string>
+    <string name="strategy_time">时间优先</string>
+    <string name="strategy_random">随机拨打</string>
+    <string name="interval_5s">5秒</string>
+    <string name="interval_10s">10秒</string>
+    <string name="interval_30s">30秒</string>
+    <string name="interval_manual">手动控制</string>
+    <string name="range_all">全部客户</string>
+    <string name="range_private">仅私客</string>
+    <string name="range_public">仅公客</string>
+    <string name="range_level_a">仅A级客户</string>
+    <string name="dial_progress">进度: %1$d/%2$d</string>
+    <string name="dial_success">成功: %1$d</string>
+    <string name="dial_failed">失败: %1$d</string>
+    <string name="dial_completed">拨号完成</string>
+    <string name="no_valid_customers">没有可拨打的客户</string>
+    
+    <!-- 跟进记录 -->
+    <string name="follow_up">跟进记录</string>
+    <string name="follow_content">跟进内容</string>
+    <string name="follow_result">跟进结果</string>
+    <string name="next_follow_time">下次跟进时间</string>
+    <string name="save_follow">保存跟进</string>
+    <string name="result_pending">待跟进</string>
+    <string name="result_contacted">已联系</string>
+    <string name="result_interested">有意向</string>
+    <string name="result_no_interest">无意向</string>
+    <string name="result_closed">已成交</string>
+    <string name="please_input_content">请输入跟进内容</string>
+    <string name="follow_saved">跟进记录已保存</string>
+    <string name="no_follow_records">暂无跟进记录</string>
+    
+    <!-- 统计 -->
+    <string name="today_stats">今日统计</string>
+    <string name="week_stats">本周统计</string>
+    <string name="month_stats">本月统计</string>
+    <string name="dial_count">拨打数量</string>
+    <string name="success_count">接通数量</string>
+    <string name="success_rate">接通率</string>
+    <string name="total_duration">通话时长</string>
+    <string name="avg_duration">平均时长</string>
+    <string name="rank">排名</string>
+    <string name="leaderboard">排行榜</string>
+    
+    <!-- 设置 -->
+    <string name="account">账号</string>
+    <string name="logout">退出登录</string>
+    <string name="logout_confirm">确定要退出登录吗？</string>
+    <string name="about">关于</string>
+    <string name="version">版本</string>
+    <string name="check_update">检查更新</string>
+    <string name="current_version">当前版本: %1$s</string>
+    <string name="latest_version">已是最新版本</string>
+    <string name="new_version_available">发现新版本</string>
+    <string name="download_update">下载更新</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="cache_cleared">缓存已清除</string>
+    
+    <!-- 权限 -->
+    <string name="permission_required">需要权限</string>
+    <string name="permission_call_rationale">需要拨打电话权限才能使用拨号功能</string>
+    <string name="permission_phone_state_rationale">需要读取通话状态权限才能记录通话信息</string>
+    <string name="permission_storage_rationale">需要存储权限才能保存数据</string>
+    <string name="go_to_settings">前往设置</string>
+    
+    <!-- 通用 -->
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="save">保存</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="confirm">确认</string>
+    <string name="loading">加载中...</string>
+    <string name="success">成功</string>
+    <string name="failed">失败</string>
+    <string name="error">错误</string>
+    <string name="network_error">网络错误</string>
+    <string name="server_error">服务器错误</string>
+    <string name="unknown_error">未知错误</string>
+    <string name="no_data">暂无数据</string>
+    <string name="retry">重试</string>
+    
+    <!-- 客户等级 -->
+    <string name="level_a">A级（重要）</string>
+    <string name="level_b">B级（一般）</string>
+    <string name="level_c">C级（待开发）</string>
+    <string name="level_d">D级（长期维护）</string>
+    
+    <!-- 客户状态 -->
+    <string name="status_valid">有效</string>
+    <string name="status_pending">暂缓</string>
+    <string name="status_purchased">已购</string>
+    <string name="status_invalid">无效</string>
+    
+    <!-- 筛选 -->
+    <string name="filter">筛选</string>
+    <string name="filter_by_type">按类型筛选</string>
+    <string name="filter_by_level">按等级筛选</string>
+    <string name="filter_by_status">按状态筛选</string>
+    <string name="reset_filter">重置筛选</string>
+    
+    <!-- 排序 -->
+    <string name="sort">排序</string>
+    <string name="sort_by_name">按姓名</string>
+    <string name="sort_by_time">按时间</string>
+    <string name="sort_by_level">按等级</string>
+    <string name="sort_asc">升序</string>
+    <string name="sort_desc">降序</string>
+</resources>
