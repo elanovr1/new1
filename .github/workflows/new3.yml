@@ -1,0 +1,74 @@
+name: Android CI - Build and Upload APK
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master", "develop" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+        
+    # 检查 gradlew 是否存在，如果不存在则生成
+    - name: Check and setup Gradle Wrapper
+      run: |
+        if [ ! -f "gradlew" ]; then
+          echo "gradlew not found, generating Gradle Wrapper..."
+          gradle wrapper --gradle-version 8.2
+        else
+          echo "gradlew found, proceeding..."
+        fi
+        
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug --stacktrace
+      
+    - name: Build Release APK
+      run: ./gradlew assembleRelease --stacktrace
+      
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: sales-dialer-debug
+        path: app/build/outputs/apk/debug/*.apk
+        retention-days: 7
+        
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: sales-dialer-release
+        path: app/build/outputs/apk/release/*.apk
+        retention-days: 30
+        
+    - name: Build Summary
+      if: always()
+      run: |
+        echo "## Build Results 🎉" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        if [ -f app/build/outputs/apk/debug/*.apk ]; then
+          echo "✅ Debug APK built successfully" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Debug APK build failed" >> $GITHUB_STEP_SUMMARY
+        fi
+        if [ -f app/build/outputs/apk/release/*.apk ]; then
+          echo "✅ Release APK built successfully" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Release APK build failed" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📦 APKs are available in the Artifacts section" >> $GITHUB_STEP_SUMMARY
