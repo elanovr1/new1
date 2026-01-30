@@ -1,0 +1,134 @@
+name: Android CI - Enhanced Build
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master", "develop" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+        
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Validate Gradle wrapper
+      uses: gradle/actions/wrapper-validation@v3
+      
+    - name: Run Lint
+      run: ./gradlew lintDebug
+      continue-on-error: true
+      
+    - name: Upload Lint Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: lint-report
+        path: app/build/reports/lint-results-debug.html
+        retention-days: 7
+        
+    - name: Run Unit Tests
+      run: ./gradlew testDebugUnitTest
+      continue-on-error: true
+      
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: app/build/reports/tests/testDebugUnitTest/
+        retention-days: 7
+        
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug --stacktrace
+      
+    - name: Build Release APK (unsigned)
+      run: ./gradlew assembleRelease --stacktrace
+      
+    # 如果你有签名配置，可以取消注释下面的步骤
+    # - name: Sign Release APK
+    #   if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    #   run: |
+    #     # 需要在GitHub Secrets中配置以下变量：
+    #     # KEYSTORE_FILE (base64编码的keystore)
+    #     # KEYSTORE_PASSWORD
+    #     # KEY_ALIAS
+    #     # KEY_PASSWORD
+    #     echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > release-keystore.jks
+    #     jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+    #       -keystore release-keystore.jks \
+    #       -storepass "${{ secrets.KEYSTORE_PASSWORD }}" \
+    #       -keypass "${{ secrets.KEY_PASSWORD }}" \
+    #       app/build/outputs/apk/release/app-release-unsigned.apk \
+    #       "${{ secrets.KEY_ALIAS }}"
+    #     ${ANDROID_SDK_ROOT}/build-tools/34.0.0/zipalign -v 4 \
+    #       app/build/outputs/apk/release/app-release-unsigned.apk \
+    #       app/build/outputs/apk/release/app-release-signed.apk
+        
+    - name: Get Version Info
+      id: version
+      run: |
+        VERSION_NAME=$(grep "versionName" app/build.gradle | awk -F'"' '{print $2}')
+        VERSION_CODE=$(grep "versionCode" app/build.gradle | awk '{print $2}')
+        echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+        echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+        echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+        echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+        
+    - name: Rename APKs
+      run: |
+        cd app/build/outputs/apk/debug
+        mv *.apk sales-dialer-v${{ steps.version.outputs.version_name }}-debug.apk
+        cd ../release
+        mv *.apk sales-dialer-v${{ steps.version.outputs.version_name }}-release-unsigned.apk
+        
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: sales-dialer-debug-v${{ steps.version.outputs.version_name }}
+        path: app/build/outputs/apk/debug/*.apk
+        retention-days: 7
+        
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: sales-dialer-release-v${{ steps.version.outputs.version_name }}
+        path: app/build/outputs/apk/release/*.apk
+        retention-days: 30
+        
+    - name: Build Summary
+      if: always()
+      run: |
+        echo "## 📱 Sales Dialer App Build Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Version:** $VERSION_NAME ($VERSION_CODE)" >> $GITHUB_STEP_SUMMARY
+        echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Build Status" >> $GITHUB_STEP_SUMMARY
+        if [ -f app/build/outputs/apk/debug/*.apk ]; then
+          echo "✅ Debug APK built successfully" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Debug APK build failed" >> $GITHUB_STEP_SUMMARY
+        fi
+        if [ -f app/build/outputs/apk/release/*.apk ]; then
+          echo "✅ Release APK built successfully" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Release APK build failed" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "The APKs are available in the **Artifacts** section at the top of this page." >> $GITHUB_STEP_SUMMARY
